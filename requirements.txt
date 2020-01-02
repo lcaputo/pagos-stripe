@@ -1,4 +1,7 @@
+mysqlclient
 django
 djangorestframework
+django-cors-headers
 djangorestframework_simplejwt
+cryptography
 stripe

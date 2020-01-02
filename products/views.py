@@ -15,13 +15,13 @@ from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
-from products.models import Product, Category
-from products.serializer import ProductSerializer, CategorySerializer
+from products.models import Book, Category
+from products.serializer import BookSerializer, CategorySerializer
 
 # Create your views here.
 class ProductList(generics.ListCreateAPIView):
-    queryset = Product.objects.all()
-    serializer_class = ProductSerializer
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
     permission_classes = (IsAuthenticated,)
     authentication_class = (TokenAuthentication,)
 

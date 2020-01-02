@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+from datetime import timedelta
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -25,7 +26,7 @@ SECRET_KEY = 'w^-(f#q2i@!_d%i&l_1a%i$-x4u5_9tkqvy3_%5hqvnlw((++k'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -38,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'corsheaders',
     'usermanager',
     'api',
     'products',
@@ -51,6 +53,8 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
 }
+
+
 # Stripe Key
 STRIPE_SECRET_KEY = 'sk_live_pqzBnwfdxmVxMiSkbX2kE9Je002fuKWOje'
 STRIPE_PUBLISHABLE_KEY = 'pk_live_JB9q2xL7Tf9CHwB6d1RcNUqv00DvrzWLii'
@@ -63,6 +67,14 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
+]
+
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:8100',
 ]
 
 ROOT_URLCONF = 'djangopay.urls'
@@ -91,8 +103,12 @@ WSGI_APPLICATION = 'djangopay.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'ecomerce',
+            'USER': 'root',
+            'PASSWORD': 'Admin123',
+            'HOST': 'doc2pdf.gtsdev.co',
+            'PORT': '3306',
     }
 }
 
@@ -116,6 +132,8 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
@@ -134,3 +152,85 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# JWT PUBLIC KEY
+PUBLIC_KEY = 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDLCYzBQ0aqtj9o22bNAoP3nXiagJdZ5garRcqEBTg92pmIDLSwfYRNj94V+HaefLw6+SzR7JDTQlIbywReH9KtunbicrM4e7s58fBoa5HgCaLt7+rEJBHo3KzQaLAkKjuDAQ+nosKbbXt90DsKsjw31xc2T//NrQLEZowTof/L4MX6u2Co2Le11lBBGvu0yHTLQEL5QI4jDteDF7BsOPM57FmQGmRN7hVVgLnFXdbT01i2JvZfUB8S8nk8ScsYmYOu6hJDigN5+YT9v1hZeQvKWPRZPj+xU3pNGg/8Tc6rMdkGlM2dS1Ga+HPCkdsDhGC7ngiLl1oIK2tMaKzAPD46eXxCywYMUeq8vyfP94SAk8fgM0M01gVEf1dBKagxvzBwflXg+u8fSxKnPU7RsrMBKJGXxlUyzXK1A6wYH941AOjOjbg6jkABLkKwvAwz8J8mE+okWchleOXTcmHeSe7+BR3JFg2OfAKO7mIAoNp5eRfVLzvq64CFt1xSdtcdnRTwQHP/PYG8OGYCLt1SGbcRiciforzP0go+Z4VcKvsUT51j0ovMyD9quR0Icsju/jzmbBDnNf6N7hu8MTv0s5YbrnN5igztT+X9XbrBIX+nPxD29fPfWg7mPEv0vPFXDukVXiMA8V+rzcnmOJiAOY8TAplEx6goiWSJMeSDtAL4fQ== h4ck3r@DESKTOP-LMGFV3F'
+
+# JWT SECRET KEY
+SECRET_KEY = """-----BEGIN RSA PRIVATE KEY-----
+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
+-----END RSA PRIVATE KEY-----
+"""
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': True,
+
+    'ALGORITHM': 'RS256',
+    'SIGNING_KEY': SECRET_KEY,
+    'VERIFYING_KEY': PUBLIC_KEY,
+    'AUDIENCE': None,
+    'ISSUER': None,
+
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'USER_ID_FIELD': 'id',
+    'USER_ID_CLAIM': 'user_id',
+    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
+    'TOKEN_TYPE_CLAIM': 'token_type',
+
+    'JTI_CLAIM': 'jti',
+
+    'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
+    'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
+    'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
+}

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from products.models import Product, Category
+from products.models import Book, Category
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -8,8 +8,8 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ('name','description')
 
         
-class ProductSerializer(serializers.ModelSerializer):
+class BookSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = Product
+        model = Book
         fields = ('title','category_id','created_at','updated_at')

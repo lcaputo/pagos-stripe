@@ -15,7 +15,7 @@ class Category(models.Model):
         return self.name
 
 
-class Product(models.Model):
+class Book(models.Model):
     id = models.AutoField(primary_key= True)
     title = models.CharField('Name', max_length= 255, blank=False, null=False)
     category_id = models.ManyToManyField(Category)
@@ -23,8 +23,8 @@ class Product(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        verbose_name = 'Product'
-        verbose_name_plural = 'Products'
+        verbose_name = 'Book'
+        verbose_name_plural = 'Books'
         ordering = ['title']
 
     def __str__(self):
